@@ -56,7 +56,7 @@ const Dropdown: React.FC<DropdownProps> = ({selectedOption, setSelectedOption}) 
                 <ChevronDown size={18} className='text-primary' />
             </div>
             {isOpen && (
-                <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+                <ul className="h-48 overflow-y-auto absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
                 {options.map((option) => (
                     <li
                     key={option.value}
