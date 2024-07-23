@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import RegisterForm from '@/app/ui/register-form';
 import Logo from '@/app/ui/logo';
-import { PrimaryButton } from '@/app/ui/button';
+import { PrimaryButton } from '@/app/ui/buttons';
 import { useFormState, useFormStatus } from 'react-dom';
 import emailIcon from '@/public/icons/email.svg';
 import lock from '@/public/icons/lock.svg';

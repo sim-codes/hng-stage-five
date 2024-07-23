@@ -1,7 +1,7 @@
 'use client';
 
 import Logo from '@/app/ui/logo';
-import { PrimaryButton } from '@/app/ui/button';
+import { PrimaryButton } from '@/app/ui/buttons';
 import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import emailIcon from '@/public/icons/email.svg';
