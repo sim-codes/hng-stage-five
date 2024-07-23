@@ -22,10 +22,10 @@ export default function Home() {
     userSession = sessionStorage.getItem('user');
   }
 
-  // if (!user && !userSession) {
-  //   router.push('/login');
-  //   return;
-  // }
+  if (!user && !userSession) {
+    router.push('/login');
+    return;
+  }
 
   return (
     <main className="flex flex-col gap-5">
@@ -35,14 +35,16 @@ export default function Home() {
               <Link href='/' className="flex items-center gap-2">
                   <Image src={logoIcon} alt="logo" width={40} height={40} />
               </Link>
-              <div className="w-[148px]">
+              <div className="min-w-[148px]">
                 <TabsList>
-                  <TabsTrigger value="links">
+                  <TabsTrigger value="links" className="sm:px-7">
                     <LinkIcon size={18} />
+                    <span className="hidden sm:inline-block font-bold">Links</span>
                   </TabsTrigger>
 
                   <TabsTrigger value="user">
                     <UserCircle size={18} />
+                    <span className="hidden sm:inline-block font-bold">Profile Details</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
