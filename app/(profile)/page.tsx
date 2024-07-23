@@ -22,7 +22,7 @@ export default function Home() {
     userSession = sessionStorage.getItem('user');
   }
 
-  if (!user && !userSession) {
+  if (!user) {
     router.push('/login');
     return;
   }

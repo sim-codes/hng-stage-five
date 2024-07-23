@@ -39,6 +39,8 @@ export default function LinksComponent() {
         loadLinksFromFirestore();
     }, [user]);
 
+    console.log(links)
+
     const addLink = () => {
         setLinks(prevLinks => [...prevLinks, { platform: '', url: '' }]);
     };
@@ -90,7 +92,7 @@ export default function LinksComponent() {
                             Let&apos;s get you started
                         </h1>
                         <p className="text-md text-darkGrey">
-                            Use the &quot;Add new link&quot; button to get started. Once you have more than one link, you can reorder and edit them. We&apos;re here to help you share your profiles with everyone!
+                            Use the &quot;Add new link&quot; button to get started. Once you have more than one link, you can reorder and edit them. We&pos;re here to help you share your profiles with everyone!
                         </p>
                     </div>
                 ) : (

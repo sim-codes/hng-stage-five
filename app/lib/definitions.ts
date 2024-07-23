@@ -1,15 +1,19 @@
+import { StaticImageData } from 'next/image';
 export interface Option {
     value: string;
     label: string;
-    icon: string;
+    icon: string | StaticImageData;
+}
+
+interface Link {
+    platform: string;
+    url: string;
+    icon?: string | StaticImageData;
 }
 
 export interface LinkCardProps {
     index: number;
-    link: {
-        platform: string;
-        url: string;
-    };
+    link: Link,
     handleLinkChange: (index: number, platform: string, url: string) => void;
     removeLink: () => void;
 }

@@ -20,7 +20,7 @@ export const options: Option[] = [
         icon: GithubIcon.src,
      },
      { value: 'frontendmentor', label: 'Frontend Mentor',
-        icon: FrontendIcon.src,
+        icon: FrontendIcon,
      },
     { value: 'twitter', label: 'Twitter',
         icon: TwitterIcon,

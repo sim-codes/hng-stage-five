@@ -14,7 +14,7 @@ const LinkCard: React.FC<LinkCardProps> = ({ index, link, handleLinkChange, remo
         if (link.platform) {
             setSelectedOption({ value: link.platform, label: link.platform, icon: '' });
         }
-    }, [link.platform]);
+    }, [link]);
 
     const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
         handleLinkChange(index, selectedOption?.value || 'github', e.target.value);

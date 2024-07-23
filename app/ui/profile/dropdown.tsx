@@ -9,16 +9,27 @@ import { ChevronDown } from 'lucide-react';
 
 const Dropdown: React.FC<DropdownProps> = ({selectedOption, setSelectedOption}) => {
     const [isOpen, setIsOpen] = useState(false);
-    // const [selectedOption, setSelectedOption] = useState<Option | null>(null);
-
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const selectOption = (option: Option) => {
         setSelectedOption(option);
-        console.log('Icon url', option.icon)
-        console.log('Gihub url', GithubIcon)
         setIsOpen(false);
     };
+
+    function getPlatformInfo(selected: Option) {
+        const option = options.find(opt => opt.value === selected.value);
+        if (option) {
+            return { label: option.label, icon: option.icon };
+        } else {
+            return { label: 'GitHub', icon: GithubIcon }; // Default to GitHub if not found
+        }
+    }
+
+    let info;
+
+    if (selectedOption){
+        info = getPlatformInfo(selectedOption)
+    }
 
     return (
         <div className="w-full mx-auto text-darkGrey">
@@ -29,13 +40,12 @@ const Dropdown: React.FC<DropdownProps> = ({selectedOption, setSelectedOption}) 
             >
                 {selectedOption ? (
                 <div className='flex items-center'>
-                    <Image
-                        src={selectedOption.icon}
-                        alt={selectedOption.label}
-                        width={18}
-                        height={18}
-                    />
-                    <span className="ml-2">{selectedOption.label}</span>
+                    { info && (
+                        <>
+                        <Image src={info.icon} alt={selectedOption.label} width={18} height={18} />
+                        <span className="ml-2">{info.label}</span>
+                        </>
+                    )}
                 </div>
                 ) : (
                     <div className='flex items-center'>
