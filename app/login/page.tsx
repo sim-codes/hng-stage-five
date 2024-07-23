@@ -31,6 +31,7 @@ export default function Page() {
                 setPassword('');
                 router.push('/')
             }
+            setDisabled(false);
             console.log('Error:', res)
             return;
         } catch (error) {

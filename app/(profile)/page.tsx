@@ -4,13 +4,13 @@ import Image from "next/image";
 import { useAuthState } from "react-firebase-hooks/auth";
 import LinksComponent from "@/app/ui/profile/links";
 import { auth } from '@/app/firebase/config';
-import { signOut } from 'firebase/auth';
-import { PrimaryButton } from "../ui/buttons";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from 'next/link';
 import logoIcon from '@/public/icons/logo.svg';
 import { Eye, Link as LinkIcon, UserCircle } from 'lucide-react';
+import Logo from "../ui/logo";
+import Details from "@/app/ui/profile/details";
 
 
 export default function Home() {
@@ -32,9 +32,12 @@ export default function Home() {
       <Tabs defaultValue="links" className="w-full">
         <div className="bg-white">
           <div className="flex items-center justify-between p-5">
-              <Link href='/' className="flex items-center gap-2">
+              <Link href='/' className="flex items-center gap-2 sm:hidden">
                   <Image src={logoIcon} alt="logo" width={40} height={40} />
               </Link>
+              <div className="hidden sm:inline-block">
+                <Logo />
+              </div>
               <div className="min-w-[148px]">
                 <TabsList>
                   <TabsTrigger value="links" className="sm:px-7">
@@ -42,7 +45,7 @@ export default function Home() {
                     <span className="hidden sm:inline-block font-bold">Links</span>
                   </TabsTrigger>
 
-                  <TabsTrigger value="user">
+                  <TabsTrigger value="details">
                     <UserCircle size={18} />
                     <span className="hidden sm:inline-block font-bold">Profile Details</span>
                   </TabsTrigger>
@@ -56,7 +59,9 @@ export default function Home() {
         <TabsContent value="links">
           <LinksComponent />
         </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
+        <TabsContent value="details">
+          <Details />
+        </TabsContent>
       </Tabs>
 
       {/* <PrimaryButton onClick={() => {

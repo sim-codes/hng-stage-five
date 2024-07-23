@@ -13,20 +13,23 @@ export default function LinksComponent() {
         url: 'https://twitter.com/username'
     }]);
 
+    const [ linkCount, setLinkCount ] = useState(0);
+
     return (
         <div className="space-y-0 m-5 rounded-lg">
-            <div className="min-h-[70vh] rounded-t-lg p-6 space-y-5">
+            <div className="min-h-[70vh] rounded-t-lg px-6 space-y-5">
                 <div className="flex flex-col gap-10">
                     <div className="space-y-3">
                         <h1 className='font-bold text-2xl text-black'>Customize your links</h1>
                         <p className="text-md text-darkGrey">Add/edit/remove links below and then share all your profiles with the world!</p>
                     </div>
-                    <OutlineButton className="w-full flex items-center justify-center">+ Add new link</OutlineButton>
+                    <OutlineButton onClick={() => setLinkCount(linkCount + 1)}
+                    className="w-full flex items-center justify-center">+ Add new link</OutlineButton>
                 </div>
 
                 {
-                    links.length < 1 ? (
-                        <div className="text-center bg-grey/20 p-5 rounded-xl gap-5">
+                    linkCount < 1 ? (
+                        <div className="text-center flex flex-col items-stretch justify-center bg-grey/10 px-5 py-14 rounded-xl gap-10">
                             <div className="w-[40vw] mx-auto sm:w-full flex items-center justify-center">
                                 <Image src={getStaterdIcon} alt="Get Started" className="w-full" />
                             </div>
@@ -38,15 +41,15 @@ export default function LinksComponent() {
                             </p>
                         </div>
                     ) : (
-                        links.map((link, index) => (
-                            <LinkCard key={index} link={link.url} index={index} />
+                        [...Array(linkCount)].map((_, index) => (
+                            <LinkCard key={index} link="" index={index} />
                         ))
                     )
                 }
             </div>
 
             <div className="rounded-b-lg w-full flex justify-end border-t p-6">
-                <PrimaryButton className="w-full flex justify-center" aria-disabled={disabled}>Save changes</PrimaryButton>
+                <PrimaryButton className="w-full flex justify-center" aria-disabled={disabled && !linkCount}>Save changes</PrimaryButton>
             </div>
         </div>
     )
