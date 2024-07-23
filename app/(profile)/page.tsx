@@ -53,7 +53,7 @@ export default function Home() {
               </div>
               <div className="border border-primary text-primary py-3 px-4 inline-flex rounded-lg">
                   <Eye size={18} className="inline-block sm:hidden" />
-                  <span className='test-primary font-medium'>Preview</span>
+                  <span className='hidden sm:inline-block font-medium'>Preview</span>
               </div>
           </div>
         </div>

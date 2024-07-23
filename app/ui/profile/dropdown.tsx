@@ -1,84 +1,22 @@
 'use client';
+
 import React, { useState, ChangeEvent } from 'react';
 import GithubIcon from '@/public/icons/github.svg';
-import TwitterIcon from '@/public/icons/twitter.svg';
-import LinkedinIcon from '@/public/icons/linkedin.svg';
-import FrontendIcon from '@/public/icons/frontendmentor.svg';
-import TwitchIcon from '@/public/icons/twitch.svg';
-import FacebookIcon from '@/public/icons/facebook.svg';
-import YoutubeIcon from '@/public/icons/youtube.svg';
-import CodewarsIcon from '@/public/icons/codewars.svg';
-import DevtoIcon from '@/public/icons/devto.svg';
-import GitlabIcon from '@/public/icons/gitlab.svg';
-import FreecodecampIcon from '@/public/icons/freecodecamp.svg';
-import CodepenIcon from '@/public/icons/codepen.svg';
-import StackoverflowIcon from '@/public/icons/stackoverflow.svg';
-import HashnodeIcon from '@/public/icons/hashnode.svg';
-
+import { options } from '@/app/lib/data';
+import { Option, DropdownProps } from '@/app/lib/definitions';
 import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
-import Github from 'teenyicons/solid/github.svg';
 
-interface Option {
-    value: string;
-    label: string;
-    icon: string;
-}
-
-const options: Option[] = [
-    { value: 'github', label: 'Github',
-        icon: GithubIcon,
-     },
-     { value: 'frontendmentor', label: 'Frontend Mentor',
-        icon: FrontendIcon,
-     },
-    { value: 'twitter', label: 'Twitter',
-        icon: TwitterIcon,
-     },
-    { value: 'linkedin', label: 'LinkedIn',
-        icon: LinkedinIcon,
-     },
-    { value: 'youtube', label: 'YouTube',
-        icon: YoutubeIcon,
-     },
-    { value: 'facebook', label: 'Facebook',
-        icon: FacebookIcon,
-     },
-    { value: 'twitch', label: 'Twitch',
-        icon: TwitchIcon,
-     },
-    { value: 'dev', label: 'Dev.to',
-        icon: DevtoIcon,
-     },
-    { value: 'codewars', label: 'Codewars',
-        icon: CodewarsIcon,
-    },
-    { value: 'codepen', label: 'CodePen',
-        icon: CodepenIcon,
-     },
-    { value: 'freecodecamp', label: 'freeCodeCamp',
-        icon: FreecodecampIcon,
-    },
-    { value: 'gitlab', label: 'GitLab',
-        icon: GitlabIcon,
-    },
-    { value: 'hashnode', label: 'Hashnode',
-        icon: HashnodeIcon,
-     },
-    { value: 'stackoverflow', label: 'Stack Overflow',
-        icon: StackoverflowIcon,
-    },
-];
-
-export default function Dropdown() {
-
+const Dropdown: React.FC<DropdownProps> = ({selectedOption, setSelectedOption}) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+    // const [selectedOption, setSelectedOption] = useState<Option | null>(null);
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const selectOption = (option: Option) => {
         setSelectedOption(option);
+        console.log('Icon url', option.icon)
+        console.log('Gihub url', GithubIcon)
         setIsOpen(false);
     };
 
@@ -91,7 +29,12 @@ export default function Dropdown() {
             >
                 {selectedOption ? (
                 <div className='flex items-center'>
-                    <Image src={selectedOption.icon} alt={selectedOption.label} width={18} height={18} />
+                    <Image
+                        src={selectedOption.icon}
+                        alt={selectedOption.label}
+                        width={18}
+                        height={18}
+                    />
                     <span className="ml-2">{selectedOption.label}</span>
                 </div>
                 ) : (
@@ -110,7 +53,7 @@ export default function Dropdown() {
                     className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100"
                     onClick={() => selectOption(option)}
                     >
-                    <Image src={option.icon} alt={option.label} width={18} height={18} className='text-red' />
+                    <Image src={option.icon} alt={option.label} width={18} height={18} />
                     <span className="ml-2">{option.label}</span>
                     </li>
                 ))}
@@ -119,3 +62,5 @@ export default function Dropdown() {
         </div>
     )
 }
+
+export default Dropdown;
