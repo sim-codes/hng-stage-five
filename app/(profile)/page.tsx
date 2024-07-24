@@ -11,24 +11,32 @@ import logoIcon from '@/public/icons/logo.svg';
 import { Eye, Link as LinkIcon, UserCircle } from 'lucide-react';
 import Logo from "../ui/logo";
 import Details from "@/app/ui/profile/details";
+import PreviewSection from '@/app/ui/profile/preview';
+import { Option } from "../lib/definitions";
+import { useLinks } from "@/app/context";
 
+const data:Option[] = []
 
 export default function Home() {
-  const [ user ] = useAuthState(auth);
   const router  = useRouter();
-  let userSession;
+  const { user, previewData } = useLinks();
 
-  if (typeof window !== 'undefined') {
-    userSession = sessionStorage.getItem('user');
-  }
+
+  // let userSession;
+
+  // if (typeof window !== 'undefined') {
+  //   userSession = sessionStorage.getItem('user');
+  // }
 
   if (!user) {
     router.push('/login');
     return;
   }
 
+
+
   return (
-    <main className="flex flex-col gap-5">
+    <main className="">
       <Tabs defaultValue="links" className="w-full">
         <div className="bg-white">
           <div className="flex items-center justify-between p-5">
@@ -51,25 +59,26 @@ export default function Home() {
                   </TabsTrigger>
                 </TabsList>
               </div>
-              <div className="border border-primary text-primary py-3 px-4 inline-flex rounded-lg">
+              <div className="border border-primary text-primary py-2 px-5 inline-flex rounded-lg">
                   <Eye size={18} className="inline-block sm:hidden" />
                   <span className='hidden sm:inline-block font-medium'>Preview</span>
               </div>
           </div>
         </div>
-        <TabsContent value="links">
-          <LinksComponent />
-        </TabsContent>
-        <TabsContent value="details">
-          <Details />
-        </TabsContent>
+        <div className="block lg:grid lg:grid-cols-5">
+          <div className="hidden lg:inline-block w-full col-span-2 bg-white rounded-lg m-5">
+              <PreviewSection links={previewData} />
+          </div>
+          <div className="col-span-3 bg-white p-5">
+            <TabsContent value="links">
+              <LinksComponent />
+            </TabsContent>
+            <TabsContent value="details">
+              <Details />
+            </TabsContent>
+          </div>
+        </div>
       </Tabs>
-
-      {/* <PrimaryButton onClick={() => {
-        signOut(auth)
-        sessionStorage.removeItem('user');
-        }}>Logout
-      </PrimaryButton> */}
     </main>
   );
 }

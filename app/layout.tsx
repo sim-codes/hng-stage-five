@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { LinksProvider } from "@/app/context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.className}>
-      <body className={`bg-lightGrey`}>{children}</body>
+      <body className={`bg-lightGrey`}>
+        <LinksProvider>{children}</LinksProvider>
+      </body>
     </html>
   );
 }
