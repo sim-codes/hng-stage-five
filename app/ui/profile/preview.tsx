@@ -1,6 +1,7 @@
 import React from 'react';
 import firstFrame from '@/public/firstframe.svg';
 import secondFrame from '@/public/secondframe.svg';
+import clsx from 'clsx';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { Option } from '@/app/lib/definitions';
@@ -34,16 +35,22 @@ const PreviewSection = ({links}:{links:Option[]}) => {
                             <div className="flex flex-col items-start justify-start gap-5">
                                 {
                                     links.map((link, index) => (
-                                        <div key={index} className={`w-[237px] rounded-lg p-3 bg-[${link.color}] h-auto
-                                            ${link.value === 'frontendmentor' ? 'text-darkGrey border border-darkGrey' : 'text-white'}
-                                        `}>
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex gap-2 items-center">
-                                                    <Image src={link.icon || '/icons/white/github.svg'} alt="Background rectangle" width={18} height={18} />
-                                                    <span className="text-md">{link.label}</span>
-                                                </div>
-                                                <ArrowRight size={24} />
+                                        <div
+                                            key={index}
+                                            className={clsx(
+                                            'w-[237px] rounded-lg p-3 h-auto flex items-center justify-between',
+                                            {
+                                                'text-darkGrey border border-darkGrey': link.value === 'frontendmentor',
+                                                'text-white': link.value !== 'frontendmentor',
+                                                [`bg-[${link.color}]`]: true
+                                            }
+                                            )}
+                                        >
+                                            <div className="flex gap-2 items-center">
+                                                <Image src={link.icon || '/icons/white/github.svg'} alt="Background rectangle" width={18} height={18} />
+                                                <span className="text-md">{link.label}</span>
                                             </div>
+                                            <ArrowRight size={24} />
                                         </div>
                                     ))
                                 }

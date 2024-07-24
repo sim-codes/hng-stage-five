@@ -15,7 +15,6 @@ import PreviewSection from '@/app/ui/profile/preview';
 import { Option } from "../lib/definitions";
 import { useLinks } from "@/app/context";
 
-const data:Option[] = []
 
 export default function Home() {
   const router  = useRouter();
