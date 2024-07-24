@@ -42,9 +42,9 @@ const PreviewSection = ({links}:{links:Option[]}) => {
                                             {
                                                 'text-darkGrey border border-darkGrey': link.value === 'frontendmentor',
                                                 'text-white': link.value !== 'frontendmentor',
-                                                [`bg-[${link.color}]`]: true
                                             }
                                             )}
+                                            style={{ backgroundColor: link.color }}
                                         >
                                             <div className="flex gap-2 items-center">
                                                 <Image src={link.icon || '/icons/white/github.svg'} alt="Background rectangle" width={18} height={18} />
