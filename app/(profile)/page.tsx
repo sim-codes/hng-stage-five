@@ -58,15 +58,15 @@ export default function Home() {
                   </TabsTrigger>
                 </TabsList>
               </div>
-              <div className="border border-primary text-primary py-2 px-5 inline-flex rounded-lg">
+              <Link href='/preview' className="border border-primary text-primary py-2 px-5 inline-flex rounded-lg">
                   <Eye size={18} className="inline-block sm:hidden" />
                   <span className='hidden sm:inline-block font-medium'>Preview</span>
-              </div>
+              </Link>
           </div>
         </div>
         <div className="block lg:grid lg:grid-cols-5">
           <div className="hidden lg:inline-block w-full col-span-2 bg-white rounded-lg m-5">
-              <PreviewSection links={previewData} />
+              <PreviewSection />
           </div>
           <div className="col-span-3 bg-white p-5">
             <TabsContent value="links">

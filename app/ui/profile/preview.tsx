@@ -1,3 +1,6 @@
+'use client';
+
+import { useLinks } from "@/app/context";
 import React from 'react';
 import firstFrame from '@/public/firstframe.svg';
 import secondFrame from '@/public/secondframe.svg';
@@ -7,9 +10,12 @@ import { ArrowRight } from 'lucide-react';
 import { Option } from '@/app/lib/definitions';
 
 
-const PreviewSection = ({links}:{links:Option[]}) => {
+const PreviewSection = () => {
+    const { user, previewData } = useLinks();
+
     return (
-    <div className="w-full relative h-[631px] flex items-center justify-center">
+    <div className="">
+        <div className="w-full relative h-auto flex items-center justify-center">
         <div className="relative w-full h-full">
             <Image src='/firstframe.svg' alt="Background rectangle" width={307} height={631} className='absolute z-0 left-24 top-3' />
             <Image src='/secondframe.svg' alt="Background rectangle" width={285} height={611} className='absolute z-10 left-[108px] top-5' />
@@ -22,8 +28,8 @@ const PreviewSection = ({links}:{links:Option[]}) => {
             </div>
             <div className="absolute z-20 top-60 left-[130px] flex flex-col items-start justify-start gap-5">
                 {
-                    links && (
-                        links.length === 0 ? (
+                    previewData && (
+                        previewData.length === 0 ? (
                             <div className="flex flex-col items-start justify-start gap-7">
                                 <div className="w-[237px] h-11 rounded-lg bg-grey" />
                                 <div className="w-[237px] h-11 rounded-lg bg-grey" />
@@ -34,7 +40,7 @@ const PreviewSection = ({links}:{links:Option[]}) => {
                         ) : (
                             <div className="flex flex-col items-start justify-start gap-5">
                                 {
-                                    links.map((link, index) => (
+                                    previewData.map((link, index) => (
                                         <div
                                             key={index}
                                             className={clsx(
@@ -60,6 +66,7 @@ const PreviewSection = ({links}:{links:Option[]}) => {
                 }
             </div>
         </div>
+    </div>
     </div>
     );
 };

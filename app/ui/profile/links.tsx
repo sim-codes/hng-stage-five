@@ -25,7 +25,7 @@ export default function LinksComponent() {
 
     return (
         <div className="space-y-0 m-5 rounded-lg">
-            <div className="min-h-[65vh] rounded-t-lg px-6 space-y-5">
+            <div className="[65vh] rounded-t-lg px-6 space-y-5">
                 <div className="flex flex-col gap-10">
                     <div className="space-y-3">
                         <h1 className='font-bold text-2xl text-black'>Customize your links</h1>
