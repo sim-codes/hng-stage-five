@@ -5,11 +5,32 @@ import { OutlineButton, PrimaryButton } from "@/app/ui/buttons";
 import Image from 'next/image';
 import uploadIcon from '@/public/icons/upload.svg';
 import uploadedIcon from '@/public/icons/uploaded.svg';
+import { getAuth, updateProfile } from "firebase/auth";
+import { doc, getDoc, setDoc, collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL, uploadString } from 'firebase/storage';
+import { db, auth, storage } from "@/app/firebase/config";
 
 export default function Details() {
     const [disabled, setDisabled] = useState(true);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    const [ firstname, setFirstname ] = useState(user?.displayName?.split(' ')[0] || '');
+    const [ lastname, setLastname ] = useState(user?.displayName?.split(' ')[1] || '');
+    const [ email, setEmail ] = useState(user?.email || '');
+
+
+    if (user !== null) {
+    user.providerData.forEach((profile) => {
+        console.log("Sign-in provider: " + profile.providerId);
+        console.log("  Provider-specific UID: " + profile.uid);
+        console.log("  Name: " + profile.displayName);
+        console.log("  Email: " + profile.email);
+        console.log("  Photo URL: " + profile.photoURL);
+    });
+    }
 
     const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -20,12 +41,43 @@ export default function Details() {
             };
             reader.readAsDataURL(file);
         }
+        setDisabled(false);
         console.log(selectedImage);
     };
 
     const handleButtonClick = () => {
         fileInputRef.current?.click();
     };
+
+    const handleSubmit = async () => {
+        if (!user) return;
+        if (firstname !== '' || lastname !== '' && user !== null) {
+            console.log('Updating profile');
+            await updateProfile(user, {
+                displayName: `${firstname} ${lastname}`
+            }).then(() => {
+                console.log('Profile updated');
+              }).catch((error) => {
+                console.error('Error updating profile:', error);
+              });
+        }
+
+        if(selectedImage) {
+            const userDocRef = doc(db, "profileImages", user.uid);
+            const storageRef = ref(storage, `profileImages/${user.uid}`);
+            const url = await uploadString(storageRef, selectedImage, "data_url").then((snapshot) => {
+                getDownloadURL(snapshot.ref).then((url) => url);
+              });
+
+            console.log(url)
+            // const userDocRef = doc(db, "users", user.uid);
+            // const storageRef = ref(storage, `profileImages/${user.uid}`);
+            // await uploadBytes(storageRef, selectedImage as Blob);
+            // const photoURL = await getDownloadURL(storageRef);
+            // console.log(photoURL)
+        }
+        return;
+    }
 
     return (
         <div className="space-y-0 m-5 rounded-lg">
@@ -39,21 +91,13 @@ export default function Details() {
 
                 <div className="p-5 text-darkGrey bg-lightGrey space-y-8 block lg:grid lg:grid-cols-3 lg:justify-items-start lg:place-items-center">
                     <h3>Profile picture</h3>
-                    <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleImageUpload}
-                        accept="image/*"
-                        className="hidden"
-                    />
-
                     <button onClick={handleButtonClick}
                     className="relative overflow-hidden h-48 w-48 bg-lightPrimary font-bold rounded-lg text-primary">
                         {
                             selectedImage ? (
                                 <div className="">
                                     <Image
-                                    src={selectedImage}
+                                    src={selectedImage as string}
                                     alt="Preview"
                                     layout="fill"
                                     objectFit="cover"
@@ -79,6 +123,13 @@ export default function Details() {
                 </div>
 
                 <form className="space-y-3 text-darkGrey text-sm p-5 bg-grey/10 rounded-md">
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleImageUpload}
+                        accept="image/*"
+                        className="hidden"
+                    />
                 <div className="flex-1">
                     <div className="w-full">
                     <div className="block lg:grid lg:grid-cols-3">
@@ -95,6 +146,8 @@ export default function Details() {
                             type="text"
                             name="firstname"
                             placeholder="Ben"
+                            value={firstname}
+                            onChange={(e) => setFirstname(e.target.value)}
                             required
                         />
                         </div>
@@ -113,6 +166,8 @@ export default function Details() {
                             type="text"
                             name="lastname"
                             placeholder="Wright"
+                            value={lastname}
+                            onChange={(e) => setLastname(e.target.value)}
                             required
                         />
                         </div>
@@ -131,6 +186,8 @@ export default function Details() {
                             type="email"
                             name="email"
                             placeholder="ben@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                         </div>
@@ -140,7 +197,7 @@ export default function Details() {
                 </form>
             </div>
             <div className="rounded-b-lg w-full flex justify-end border-t p-6">
-                <PrimaryButton className="w-full flex justify-center lg:w-[10vw] lg:self-end" aria-disabled={disabled}>Save</PrimaryButton>
+                <PrimaryButton onClick={handleSubmit} className="w-full flex justify-center lg:w-[10vw] lg:self-end" aria-disabled={disabled}>Save</PrimaryButton>
             </div>
         </div>
     )

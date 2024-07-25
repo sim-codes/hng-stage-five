@@ -8,7 +8,9 @@ import emailIcon from '@/public/icons/email.svg';
 import lock from '@/public/icons/lock.svg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { signIn } from 'next-auth/react';
+import { signInWithEmailAndPassword, getIdToken } from 'firebase/auth';
+// import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
 
@@ -17,27 +19,55 @@ export default function Page() {
     const [password, setPassword ] = useState('');
     const [ disabled, setDisabled ] = useState(false);
     const router = useRouter();
+    const [error, setError] = useState<string | null>(null);
 
-    const [ signInWithEmailAndPassword ] = useSignInWithEmailAndPassword(auth);
+    // const handleSignIn = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    //     e.preventDefault();
+    //     setDisabled(true);
+    //     try {
+    //         const res = await signInWithEmailAndPassword(email, password);
+    //         if (res?.user) {
+    //             sessionStorage.setItem('user', JSON.stringify(res.user));
+    //             setEmail('');
+    //             setPassword('');
+    //             router.push('/')
+    //         }
+    //         setDisabled(false);
+    //         console.log('Error:', res)
+    //         return;
+    //     } catch (error) {
+    //         console.error(error)
+    //     }
+    // }
 
-    const handleSignIn = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setDisabled(true);
+        setError(null);
+        setDisabled(true)
+    
         try {
-            const res = await signInWithEmailAndPassword(email, password);
-            if (res?.user) {
-                sessionStorage.setItem('user', JSON.stringify(res.user));
-                setEmail('');
-                setPassword('');
-                router.push('/')
-            }
-            setDisabled(false);
-            console.log('Error:', res)
-            return;
+          // Sign in with Firebase
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          
+          // Get the ID token
+          const idToken = await getIdToken(userCredential.user);
+    
+          // Sign in with NextAuth using the ID token
+          const result = await signIn('credentials', {
+            idToken,
+            redirect: false,
+          });
+    
+          if (result?.error) {
+            setError(result.error);
+          } else {
+            router.push('/');
+          }
         } catch (error) {
-            console.error(error)
+          setError('Failed to sign in. Please check your credentials.');
+          console.error('Sign-in error:', error);
         }
-    }
+      };
 
     return (
         <main className="w-full min-h-screen max-w-7xl mx-auto flex justify-center sm:items-center items-start">
@@ -48,7 +78,7 @@ export default function Page() {
                         <h1 className='font-bold text-3xl text-black'>Login</h1>
                         <span className='text-sm text-darkGrey'>Add your details below to get back into the app</span>
                     </div>
-                    <form className="space-y-3 text-darkGrey text-sm">
+                    <form onSubmit={handleSubmit} className="space-y-3 text-darkGrey text-sm">
                         <div className="flex-1">
                             <div className="w-full">
                             <div>
@@ -96,8 +126,9 @@ export default function Page() {
                                 className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2" />
                                 </div>
                             </div>
+                            {error && <p>{error}</p>}
                             </div>
-                            <PrimaryButton onClick={handleSignIn}
+                            <PrimaryButton
                             className="mt-4 w-full justify-center" aria-disabled={disabled}>
                                 Log in
                             </PrimaryButton>

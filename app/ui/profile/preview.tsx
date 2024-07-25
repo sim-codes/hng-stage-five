@@ -1,6 +1,6 @@
 'use client';
 
-import { useLinks } from "@/app/context";
+import { useLinks } from "@/app/context/links";
 import React from 'react';
 import firstFrame from '@/public/firstframe.svg';
 import secondFrame from '@/public/secondframe.svg';

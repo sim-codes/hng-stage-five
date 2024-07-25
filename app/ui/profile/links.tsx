@@ -8,7 +8,7 @@ import { OutlineButton, PrimaryButton } from "@/app/ui/buttons";
 import getStartedIcon from '@/public/icons/started.svg';
 import Image from 'next/image';
 import LinkCard from '@/app/ui/profile/linkCard';
-import { useLinks } from "@/app/context";
+import { useLinks } from "@/app/context/links";
 
 interface Link {
     platform: string;

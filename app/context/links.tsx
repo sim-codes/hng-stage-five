@@ -7,12 +7,14 @@ import { db, auth } from "@/app/firebase/config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useToast } from "@/components/ui/use-toast"
 import { optionsWhite } from '@/app/lib/data';
+import { useSession } from 'next-auth/react';
 
 interface LinksContextProps {
     user: any;
     links: LinkProps[];
     previewData: Option[];
     loading: boolean;
+    setPreviewData: React.Dispatch<React.SetStateAction<Option[]>>;
     addLink: () => void;
     removeLink: (index: number) => void;
     handleLinkChange: (index: number, platform: string, url: string) => void;
@@ -28,11 +30,13 @@ export function LinksProvider({ children }: Readonly<{ children: React.ReactNode
     const [user] = useAuthState(auth);
     const [links, setLinks] = useState<LinkProps[]>([]);
 
+    const { data: session } = useSession();
+
     useEffect(() => {
         const loadLinksFromFirestore = async () => {
-            if (!user) return;
+            if (!session) return;
             setLoading(true);
-            const userDocRef = doc(db, "users", user.uid);
+            const userDocRef = doc(db, "users", session?.user.id);
             try {
                 const docSnap = await getDoc(userDocRef);
                 if (docSnap.exists()) {
@@ -46,7 +50,7 @@ export function LinksProvider({ children }: Readonly<{ children: React.ReactNode
         };
 
         loadLinksFromFirestore();
-    }, [user]);
+    }, [session]);
 
     // get preview data from links
     useEffect(() => {
@@ -69,9 +73,9 @@ export function LinksProvider({ children }: Readonly<{ children: React.ReactNode
     };
 
     const handleSave = async () => {
-        if (!user) return;
+        if (!session) return;
         try {
-            const userDocRef = doc(db, "users", user.uid);
+            const userDocRef = doc(db, "users", session?.user.id);
             await setDoc(userDocRef, { links }, { merge: true });
             // Call the toast function directly
             toast({
@@ -90,7 +94,7 @@ export function LinksProvider({ children }: Readonly<{ children: React.ReactNode
 
     return (
         <LinksContext.Provider
-            value={{ user, links, addLink, removeLink, handleLinkChange, handleSave, loading, previewData }}
+            value={{ user, links, addLink, removeLink, handleLinkChange, handleSave, loading, previewData, setPreviewData }}
         >
             {children}
         </LinksContext.Provider>
