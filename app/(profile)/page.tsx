@@ -53,7 +53,7 @@ export default function Home() {
               </div>
               <div className="flex gap-2">
               <SignOutButton />
-              <Link href='/preview' className="border border-primary text-primary py-2 px-5 inline-flex rounded-lg">
+              <Link href={`/${session?.user.id}/preview`} className="border border-primary text-primary py-2 px-5 inline-flex rounded-lg">
                   <Eye size={18} className="inline-block sm:hidden" />
                   <span className='hidden sm:inline-block font-medium'>Preview</span>
               </Link>
@@ -64,7 +64,7 @@ export default function Home() {
           <div className="hidden lg:inline-block w-full col-span-2 bg-white rounded-lg m-5">
               <PreviewSection />
           </div>
-          <div className="col-span-3 bg-white lg:p-5">
+          <div className="col-span-3 bg-white lg:p-5 h-[70vh] w-full overflow-y-scroll">
             <TabsContent value="links">
               <LinksComponent />
             </TabsContent>

@@ -6,8 +6,7 @@ import Image from 'next/image';
 import uploadIcon from '@/public/icons/upload.svg';
 import uploadedIcon from '@/public/icons/uploaded.svg';
 import { getAuth, updateProfile } from "firebase/auth";
-import { doc, getDoc, setDoc, collection, addDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, uploadString } from 'firebase/storage';
+import { ref, getDownloadURL, uploadString } from 'firebase/storage';
 import { db, auth, storage } from "@/app/firebase/config";
 
 export default function Details() {
@@ -51,32 +50,40 @@ export default function Details() {
 
     const handleSubmit = async () => {
         if (!user) return;
-        if (firstname !== '' || lastname !== '' && user !== null) {
-            console.log('Updating profile');
-            await updateProfile(user, {
-                displayName: `${firstname} ${lastname}`
-            }).then(() => {
+        
+        try {
+            if ((firstname !== '' || lastname !== '') && user !== null) {
+                console.log('Updating profile');
+                await updateProfile(user, {
+                    displayName: `${firstname} ${lastname}`
+                });
                 console.log('Profile updated');
-              }).catch((error) => {
-                console.error('Error updating profile:', error);
-              });
-        }
-
-        if(selectedImage) {
-            const storageRef = ref(storage, 'images');
-            uploadString(storageRef, selectedImage, 'data_url').then((snapshot) => {
+            }
+    
+            if (selectedImage) {
+                const imageName = `${user.uid}_${Date.now()}.jpg`; // Create a unique filename
+                const storageRef = ref(storage, `images/${imageName}`);
+                
+                const snapshot = await uploadString(storageRef, selectedImage, 'data_url');
                 console.log('Uploaded a data_url string!');
-                getDownloadURL(snapshot.ref).then((downloadURL) => {
-                    console.log('File available at', downloadURL);
-                  });
-              });
+                
+                const downloadURL = await getDownloadURL(snapshot.ref);
+                console.log('File available at', downloadURL);
+                
+                // Update user profile with the image URL
+                await updateProfile(user, {
+                    photoURL: downloadURL
+                });
+                console.log('Profile picture updated');
+            }
+        } catch (error) {
+            console.error('Error updating profile or uploading image:', error);
         }
-        return;
     }
 
     return (
-        <div className="space-y-0 m-5 rounded-lg">
-            <div className="min-h-[70vh] rounded-t-lg px-6 space-y-5">
+        <div className="space-y-0 m-5 rounded-lg w-full h-full">
+            <div className="rounded-t-lg px-6 space-y-5">
                 <div className="flex flex-col gap-10">
                     <div className="space-y-3">
                         <h1 className='font-bold text-2xl text-black'>Profile Details</h1>

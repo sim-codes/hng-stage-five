@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useLinks } from "@/app/context/links";
-import PreviewSection from '@/app/ui/profile/preview';
 import { db, auth } from "@/app/firebase/config";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import Link from 'next/link';
@@ -11,12 +10,43 @@ import { ArrowRight } from 'lucide-react';
 import clsx from 'clsx';
 import { Option, LinkProps } from "@/app/lib/definitions";
 import { optionsWhite } from '@/app/lib/data';
+import { useToast } from "@/components/ui/use-toast"
+
 
 export default function Page({ params }: { params: { id: string } }){
     const {  previewData, setPreviewData } = useLinks();
     const [ data, setData ] = useState<LinkProps[]>([]);
-
+    const [copySuccess, setCopySuccess] = useState<string>('');
+    const { toast } = useToast()
+    
     const user_id = params.id;
+
+    const handleCopy = async () => {
+        try {
+            const currentUrl = window.location.href;
+            await navigator.clipboard.writeText(currentUrl);
+            setCopySuccess('Copied!');
+            toast({
+            description: copySuccess,
+        });
+        } catch (err) {
+            setCopySuccess('Failed to copy!');
+        }
+        };
+
+        // async function getUserById(userId: string) {
+        //     try {
+        //         const userRecord = await getUser(auth, userId);
+        //         console.log('Successfully fetched user data:', userRecord.toJSON());
+        //         return userRecord;
+        //     } catch (error) {
+        //         console.error('Error fetching user data:', error);
+        //     }
+        // }
+
+        // const user = getUserById(user_id);
+        // console.log()
+
 
     useEffect(() => {
         const loadLinksFromFirestore = async (userId: string) => {
@@ -52,7 +82,7 @@ export default function Page({ params }: { params: { id: string } }){
         <main className="w-full p-5">
             <div className="flex items-center justify-between gap-5">
                 <Link href="/" className='w-full sm:w-[12vw] text-center bg-white border border-primary rounded-lg p-3 text-primary'>Back to Editor</Link>
-                <Link href="/" className='w-full sm:w-[10vw] text-center border border-primary rounded-lg p-3 text-white bg-primary'>Share Link</Link>
+                <button onClick={handleCopy} className='w-full sm:w-[10vw] text-center border border-primary rounded-lg p-3 text-white bg-primary'>Share Link</button>
             </div>
             <div className="p-5 flex flex-col items-center justify-center mt-5 gap-5">
                 <div className="animate-pulse self-stretch flex flex-col items-center justify-start gap-6">

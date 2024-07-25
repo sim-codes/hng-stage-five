@@ -1,8 +1,9 @@
-// app/api/auth/[...nextauth]/route.ts
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { db, storage } from "@/app/firebase/config";
 
 // Initialize Firebase Admin SDK if it hasn't been already
 if (!getApps().length) {
@@ -14,7 +15,6 @@ if (!getApps().length) {
     }),
   });
 }
-let token;
 
 const handler = NextAuth({
   providers: [
@@ -29,8 +29,6 @@ const handler = NextAuth({
         try {
           const auth = getAuth();
           const decodedToken = await auth.verifyIdToken(credentials.idToken);
-          token = decodedToken;
-          
           return {
             id: decodedToken.uid,
             email: decodedToken.email,
@@ -65,6 +63,5 @@ const handler = NextAuth({
   },
   debug: process.env.NODE_ENV === 'development',
 });
-console.log('Token:', token);
 
 export { handler as GET, handler as POST };
