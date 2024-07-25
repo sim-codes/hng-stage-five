@@ -17,6 +17,7 @@ if (!getApps().length) {
 }
 
 const handler = NextAuth({
+    secret: process.env.AUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
