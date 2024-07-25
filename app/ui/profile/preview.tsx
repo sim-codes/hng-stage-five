@@ -11,7 +11,7 @@ import { Option } from '@/app/lib/definitions';
 
 
 const PreviewSection = () => {
-    const { user, previewData } = useLinks();
+    const { user, previewData, selectedImage } = useLinks();
 
     return (
     <div className="">
@@ -45,7 +45,12 @@ const PreviewSection = () => {
                     <div className="absolute z-20 top-16 left-[130px] flex flex-col items-start justify-start gap-5">
                         <div className="flex flex-col items-start justify-start gap-5">
                                 <div className="w-full flex flex-col items-center justify-center">
-                                    <div className="w-28 h-28 rounded-full bg-grey" />
+                                    <div className="relative w-28 h-28 rounded-full bg-grey overflow-hidden">
+                                        {
+                                            selectedImage && <Image src={selectedImage} alt="Background rectangle" layout="fill"
+                                            objectFit="cover" />
+                                        }
+                                    </div>
                                     <span className="text-xl font-bold">{user.displayName}</span>
                                     <span className="text-sm">{user.email}</span>
                                 </div>

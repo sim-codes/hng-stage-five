@@ -8,13 +8,18 @@ import uploadedIcon from '@/public/icons/uploaded.svg';
 import { getAuth, updateProfile } from "firebase/auth";
 import { ref, getDownloadURL, uploadString } from 'firebase/storage';
 import { db, auth, storage } from "@/app/firebase/config";
+import { useToast } from "@/components/ui/use-toast";
+import { useLinks } from "@/app/context/links";
+
 
 export default function Details() {
     const [disabled, setDisabled] = useState(true);
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const { selectedImage, setSelectedImage } = useLinks();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const auth = getAuth();
     const user = auth.currentUser;
+
+    const { toast } = useToast()
 
     const [ firstname, setFirstname ] = useState(user?.displayName?.split(' ')[0] || '');
     const [ lastname, setLastname ] = useState(user?.displayName?.split(' ')[1] || '');
@@ -56,6 +61,9 @@ export default function Details() {
                 console.log('Updating profile');
                 await updateProfile(user, {
                     displayName: `${firstname} ${lastname}`
+                });
+                toast({
+                    description: 'Profile updated.',
                 });
                 console.log('Profile updated');
             }

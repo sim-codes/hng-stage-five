@@ -19,6 +19,8 @@ interface LinksContextProps {
     removeLink: (index: number) => void;
     handleLinkChange: (index: number, platform: string, url: string) => void;
     handleSave: () => void;
+    selectedImage: string | null;
+    setSelectedImage: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const LinksContext = createContext<LinksContextProps | undefined>(undefined);
@@ -29,6 +31,7 @@ export function LinksProvider({ children }: Readonly<{ children: React.ReactNode
     const [ previewData, setPreviewData ] = useState<Option[]>([]);
     const [user] = useAuthState(auth);
     const [links, setLinks] = useState<LinkProps[]>([]);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const { data: session } = useSession();
 
@@ -94,7 +97,8 @@ export function LinksProvider({ children }: Readonly<{ children: React.ReactNode
 
     return (
         <LinksContext.Provider
-            value={{ user, links, addLink, removeLink, handleLinkChange, handleSave, loading, previewData, setPreviewData }}
+            value={{ user, links, addLink, removeLink, handleLinkChange,
+                 handleSave, loading, previewData, setPreviewData, selectedImage, setSelectedImage }}
         >
             {children}
         </LinksContext.Provider>

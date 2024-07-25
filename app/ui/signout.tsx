@@ -1,36 +1,28 @@
-// app/components/SignOutButton.tsx
 'use client';
 
+import { useLinks } from "@/app/context/links";
 import { PrimaryButton } from '@/app/ui/buttons';
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { auth } from '@/app/firebase/config';
+import { signOut as nextAuthSignOut } from 'next-auth/react';
 import { signOut as firebaseSignOut } from 'firebase/auth';
-import { useState } from 'react';
 
 const SignOutButton = () => {
-  const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
 
+  const { user } = useLinks();
   const handleSignOut = async () => {
     try {
       // Sign out from Firebase
-      await firebaseSignOut(auth);
-
-      // Sign out from NextAuth
-      const result = await signOut({ redirect: false, callbackUrl: '/' });
-
-      // Check if signOut was successful
-      if (result?.url) {
-        // Redirect to the URL returned by signOut
-        router.push(result.url);
-      } else {
-        // If no URL is returned, redirect to home page
-        router.push('/login');
+      if (user) {
+        await firebaseSignOut(auth);
       }
+      console.log('Signed out from Firebase');
+  
+      // Sign out from NextAuth
+      await nextAuthSignOut({ callbackUrl: '/' });
+      console.log('Signed out from NextAuth');
     } catch (error) {
-      console.error('Error signing out:', error);
-      setError('Failed to sign out. Please try again.');
+      console.error('Error during sign out:', error);
+      // Handle error (e.g., show error message to user)
     }
   };
 
