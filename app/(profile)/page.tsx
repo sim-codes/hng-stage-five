@@ -1,9 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import { useAuthState } from "react-firebase-hooks/auth";
 import LinksComponent from "@/app/ui/profile/links";
-import { auth } from '@/app/firebase/config';
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from 'next/link';
@@ -12,15 +10,12 @@ import { Eye, Link as LinkIcon, UserCircle } from 'lucide-react';
 import Logo from "../ui/logo";
 import Details from "@/app/ui/profile/details";
 import PreviewSection from '@/app/ui/profile/preview';
-import { Option } from "../lib/definitions";
-import { useLinks } from "@/app/context/links";
 import { useSession } from 'next-auth/react';
 import SignOutButton from "@/app/ui/signout";
 
 
 export default function Home() {
   const router  = useRouter();
-  const { user, previewData } = useLinks();
   const { data: session } = useSession();
 
   if (!session) {
