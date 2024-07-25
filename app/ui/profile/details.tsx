@@ -63,18 +63,13 @@ export default function Details() {
         }
 
         if(selectedImage) {
-            const userDocRef = doc(db, "profileImages", user.uid);
-            const storageRef = ref(storage, `profileImages/${user.uid}`);
-            const url = await uploadString(storageRef, selectedImage, "data_url").then((snapshot) => {
-                getDownloadURL(snapshot.ref).then((url) => url);
+            const storageRef = ref(storage, 'images');
+            uploadString(storageRef, selectedImage, 'data_url').then((snapshot) => {
+                console.log('Uploaded a data_url string!');
+                getDownloadURL(snapshot.ref).then((downloadURL) => {
+                    console.log('File available at', downloadURL);
+                  });
               });
-
-            console.log(url)
-            // const userDocRef = doc(db, "users", user.uid);
-            // const storageRef = ref(storage, `profileImages/${user.uid}`);
-            // await uploadBytes(storageRef, selectedImage as Blob);
-            // const photoURL = await getDownloadURL(storageRef);
-            // console.log(photoURL)
         }
         return;
     }

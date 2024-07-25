@@ -34,8 +34,7 @@ const handler = NextAuth({
           return {
             id: decodedToken.uid,
             email: decodedToken.email,
-            name: decodedToken.displayName,
-            image: decodedToken.picture,
+            name: decodedToken.name || decodedToken.email?.split('@')[0],
           };
         } catch (error) {
           console.error('Error verifying Firebase token:', error);
