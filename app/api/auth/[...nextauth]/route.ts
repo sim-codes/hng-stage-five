@@ -2,10 +2,7 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { db, storage } from "@/app/firebase/config";
 
-// Initialize Firebase Admin SDK if it hasn't been already
 if (!getApps().length) {
   initializeApp({
     credential: cert({
@@ -17,7 +14,7 @@ if (!getApps().length) {
 }
 
 const handler = NextAuth({
-    secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -25,7 +22,9 @@ const handler = NextAuth({
         idToken: { label: "ID Token", type: "text" }
       },
       async authorize(credentials) {
-        if (!credentials?.idToken) return null;
+        if (!credentials?.idToken) {
+          throw new Error("No ID token provided");
+        }
         
         try {
           const auth = getAuth();
@@ -37,11 +36,14 @@ const handler = NextAuth({
           };
         } catch (error) {
           console.error('Error verifying Firebase token:', error);
-          return null;
+          throw new Error(error instanceof Error ? error.message : "Failed to authenticate");
         }
       }
     })
   ],
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -58,7 +60,6 @@ const handler = NextAuth({
   },
   events: {
     async signOut({ token }) {
-      // You can perform any cleanup here if needed
       console.log('User signed out:', token);
     },
   },
