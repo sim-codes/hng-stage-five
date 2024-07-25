@@ -3,14 +3,12 @@
 import Logo from '@/app/ui/logo';
 import { PrimaryButton } from '@/app/ui/buttons';
 import { useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
 import emailIcon from '@/public/icons/email.svg';
 import lock from '@/public/icons/lock.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { signInWithEmailAndPassword, getIdToken } from 'firebase/auth';
-// import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import { useRouter } from 'next/navigation';
 
