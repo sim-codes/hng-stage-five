@@ -27,7 +27,7 @@ export default function Page({ params }: { params: { id: string } }){
             await navigator.clipboard.writeText(currentUrl);
             setCopySuccess('Copied!');
             toast({
-            description: copySuccess,
+            description: 'The link has been copie to your clip board.',
         });
         } catch (err) {
             setCopySuccess('Failed to copy!');
@@ -79,12 +79,17 @@ export default function Page({ params }: { params: { id: string } }){
     console.log('Data:', data);
 
     return (
-        <main className="w-full p-5">
-            <div className="flex items-center justify-between gap-5">
+        <main className="relative w-full p-5 max-w-screen overflow-x-hidden h-screen">
+
+            <div className="h-[40vh] w-full bg-primary hidden sm:inline-block absolute -z-0 top-0 left-0 rounded-b-3xl" />
+
+            <div className="absolute z-20 w-full left-0">
+            <div className="flex items-center justify-between gap-5p-3 rounded-lg w-[90%] mx-auto bg-white p-4 my-5">
                 <Link href="/" className='w-full sm:w-[12vw] text-center bg-white border border-primary rounded-lg p-3 text-primary'>Back to Editor</Link>
                 <button onClick={handleCopy} className='w-full sm:w-[10vw] text-center border border-primary rounded-lg p-3 text-white bg-primary'>Share Link</button>
             </div>
-            <div className="p-5 flex flex-col items-center justify-center mt-5 gap-5">
+            <div className="p-5 mt-5">
+                <div className="flex flex-col items-center justify-center bg-white w-[349px] mx-auto rounded-2xl gap-5 px-14 py-12 shadow-[0px_0px_32px_rgba(0,_0,_0,_0.1)]">
                 <div className="animate-pulse self-stretch flex flex-col items-center justify-start gap-6">
                     <div className="w-24 h-24 rounded-full bg-gray-200" />
                     <div className="flex flex-col items-center justify-start gap-3">
@@ -92,13 +97,14 @@ export default function Page({ params }: { params: { id: string } }){
                         <div className="w-[72px] h-2 rounded-full bg-gray-200" />
                     </div>
                 </div>
-                <div className="flex flex-col gap-5 justify-center items-center">
+                <div className="flex flex-col gap-5 justify-center items-center w-full">
                 {
                     previewData.map((link, index) => (
-                        <div
+                        <Link
+                            href={`/`}
                             key={index}
                             className={clsx(
-                            'w-[237px] rounded-lg p-3 h-auto flex items-center justify-between',
+                            'w-full rounded-lg p-3 h-auto flex items-center justify-between',
                             {
                                 'text-darkGrey border border-darkGrey': link.value === 'frontendmentor',
                                 'text-white': link.value !== 'frontendmentor',
@@ -111,10 +117,12 @@ export default function Page({ params }: { params: { id: string } }){
                                 <span className="text-md">{link.label}</span>
                             </div>
                             <ArrowRight size={24} />
-                        </div>
+                        </Link>
                     ))
                 }
                 </div>
+                </div>
+            </div>
             </div>
         </main>
     )
