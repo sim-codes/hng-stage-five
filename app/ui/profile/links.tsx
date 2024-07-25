@@ -49,15 +49,17 @@ export default function LinksComponent() {
                         </p>
                     </div>
                 ) : (
-                    links.map((link, index) => (
-                        <LinkCard
-                            key={index}
-                            index={index}
-                            link={link}
-                            handleLinkChange={handleLinkChange}
-                            removeLink={() => removeLink(index)}
-                        />
-                    ))
+                    <div className="max-h-[50vh] w-full overflow-y-scroll space-y-4">
+                        {links.map((link, index) => (
+                            <LinkCard
+                                key={index}
+                                index={index}
+                                link={link}
+                                handleLinkChange={handleLinkChange}
+                                removeLink={() => removeLink(index)}
+                            />
+                        ))}
+                    </div>
                 )}
             </div>
 
