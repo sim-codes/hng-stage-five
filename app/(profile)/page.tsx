@@ -39,7 +39,7 @@ export default function Home() {
   }
 
   return (
-    <main className="">
+    <main className="max-w-screen overflow-x-hidden">
       <Tabs defaultValue="links" className="w-full">
         <div className="bg-white">
           <div className="flex items-center justify-between p-5">
@@ -75,7 +75,7 @@ export default function Home() {
           <div className="hidden lg:inline-block w-full col-span-2 bg-white rounded-lg m-5">
               <PreviewSection />
           </div>
-          <div className="col-span-3 bg-white lg:p-5">
+          <div className="lg:col-span-3 bg-white lg:p-5">
             <TabsContent value="links">
               <LinksComponent />
             </TabsContent>

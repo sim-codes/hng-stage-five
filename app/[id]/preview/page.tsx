@@ -70,7 +70,7 @@ export default function Page({ params }: { params: { id: string } }){
             <div className="h-[40vh] w-full bg-primary hidden sm:inline-block absolute -z-0 top-0 left-0 rounded-b-3xl" />
 
             <div className="absolute z-20 w-full left-0">
-            <div className="flex items-center justify-between gap-5 p-3 rounded-lg w-[90%] mx-auto bg-white p-4 my-5">
+            <div className="flex items-center justify-between gap-5 p-3 rounded-lg w-full sm:w-[90%] mx-auto bg-white my-5">
                 <Link href="/" className='w-full sm:w-[12vw] text-center bg-white border border-primary rounded-lg p-3 text-primary'>Back to Editor</Link>
                 <button onClick={handleCopy} className='w-full sm:w-[10vw] text-center border border-primary rounded-lg p-3 text-white bg-primary'>Share Link</button>
             </div>
