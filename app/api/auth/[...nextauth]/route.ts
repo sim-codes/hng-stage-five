@@ -59,10 +59,9 @@ const handler = NextAuth({
     },
   },
   events: {
-    async signOut({ token, session }) {
+    async signOut({ token }) {
       console.log('SignOut event triggered');
       console.log('Token:', JSON.stringify(token));
-      console.log('Session:', JSON.stringify(session));
 
       try {
         // Revoke Firebase session if a user ID is available
@@ -72,15 +71,9 @@ const handler = NextAuth({
           console.log(`Firebase refresh tokens revoked for user: ${token.id}`);
         }
 
-        // Perform any additional cleanup here
-        // For example, you might want to log the sign-out event to your database
-        // await logSignOutEvent(token.id);
-
         console.log('SignOut event completed successfully');
       } catch (error) {
         console.error('Error during sign out event:', error);
-        // Optionally, you could throw the error here if you want NextAuth to handle it
-        // throw error;
       }
     },
   },
