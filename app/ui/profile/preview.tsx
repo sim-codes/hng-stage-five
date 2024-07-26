@@ -45,7 +45,7 @@ const PreviewSection = () => {
                     <div className="absolute z-20 top-16 left-[130px] flex flex-col items-start justify-start gap-5">
                         <div className="flex flex-col items-start justify-start gap-5">
                                 <div className="w-full flex flex-col items-center justify-center">
-                                    <div className="relative w-28 h-28 rounded-full bg-grey overflow-hidden">
+                                    <div className="relative w-28 h-28 rounded-full bg-grey overflow-hidden border-2 border-primary">
                                         {
                                             selectedImage && <Image src={selectedImage} alt="Background rectangle" layout="fill"
                                             objectFit="cover" />
