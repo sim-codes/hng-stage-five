@@ -25,7 +25,7 @@ const handler = NextAuth({
         if (!credentials?.idToken) {
           throw new Error("No ID token provided");
         }
-        
+
         try {
           const auth = getAuth();
           const decodedToken = await auth.verifyIdToken(credentials.idToken);
