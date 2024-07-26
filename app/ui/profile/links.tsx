@@ -17,15 +17,14 @@ interface Link {
 
 export default function LinksComponent() {
     const { links, addLink, handleLinkChange, removeLink, handleSave, loading } = useLinks();
-    const [user] = useAuthState(auth);
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div className="space-y-0 m-5 rounded-lg h-full w-full">
-            <div className="rounded-t-lg px-6 space-y-5">
+        <div className="space-y-0 lg:m-5 rounded-lg h-full w-full">
+            <div className="rounded-t-lg px-6 space-y-5 pb-5">
                 <div className="flex flex-col gap-10">
                     <div className="space-y-3">
                         <h1 className='font-bold text-2xl text-black'>Customize your links</h1>
@@ -38,7 +37,7 @@ export default function LinksComponent() {
 
                 {links.length === 0 ? (
                     <div className="text-center flex flex-col items-stretch justify-center bg-grey/10 px-5 py-14 rounded-xl gap-10">
-                        <div className="w-[40vw] mx-auto sm:w-full flex items-center justify-center">
+                        <div className="w-[40vw] md:w-[250px] mx-auto sm:w-full flex items-center justify-center">
                             <Image src={getStartedIcon} alt="Get Started" className="w-full" />
                         </div>
                         <h1 className='font-bold text-2xl text-black'>
@@ -49,7 +48,7 @@ export default function LinksComponent() {
                         </p>
                     </div>
                 ) : (
-                    <div className="max-h-[50vh] w-full overflow-y-scroll space-y-4">
+                    <div className="max-h-[60vh] w-full overflow-y-scroll no-scrollbar space-y-4">
                         {links.map((link, index) => (
                             <LinkCard
                                 key={index}

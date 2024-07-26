@@ -32,7 +32,7 @@ const PreviewSection = () => {
             }
             {
                 previewData.length === 0 ? (
-                    <div className="absolute z-20 top-44 left-[130px] flex flex-col items-start justify-start gap-5">
+                    <div className="absolute z-20 top-60 left-[130px] flex flex-col items-start justify-start gap-5">
                         <div className="flex flex-col items-start justify-start gap-7 animate-pulse">
                             <div className="w-[237px] h-11 rounded-lg bg-grey" />
                             <div className="w-[237px] h-11 rounded-lg bg-grey" />

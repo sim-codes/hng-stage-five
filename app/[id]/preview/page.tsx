@@ -61,9 +61,6 @@ export default function Page({ params }: { params: { id: string } }){
         setPreviewData(data.map(link => optionsWhite.find(option => option.value === link.platform) || { value: '', label: '', icon: '' }));
     }, [setPreviewData, data]);
 
-    console.log('User ID:', user_id);
-    console.log('Data:', data);
-
     return (
         <main className="relative w-full p-5 max-w-screen overflow-x-hidden h-screen">
 
@@ -71,8 +68,8 @@ export default function Page({ params }: { params: { id: string } }){
 
             <div className="absolute z-20 w-full left-0">
             <div className="flex items-center justify-between gap-5 p-3 rounded-lg w-full sm:w-[90%] mx-auto bg-white my-5">
-                <Link href="/" className='w-full sm:w-[12vw] text-center bg-white border border-primary rounded-lg p-3 text-primary'>Back to Editor</Link>
-                <button onClick={handleCopy} className='w-full sm:w-[10vw] text-center border border-primary rounded-lg p-3 text-white bg-primary'>Share Link</button>
+                <Link href="/" className='w-full sm:max-w-[20vw] text-center bg-white border border-primary rounded-lg p-3 text-primary'>Back to Editor</Link>
+                <button onClick={handleCopy} className='w-full sm:max-w-[15vw] text-center border border-primary rounded-lg p-3 text-white bg-primary'>Share Link</button>
             </div>
             <div className="p-5 mt-5">
                 <div className="flex flex-col items-center justify-center bg-white w-[349px] mx-auto rounded-2xl gap-5 px-14 py-12 shadow-[0px_0px_32px_rgba(0,_0,_0,_0.1)]">

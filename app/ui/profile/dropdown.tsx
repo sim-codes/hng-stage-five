@@ -6,6 +6,7 @@ import { options } from '@/app/lib/data';
 import { Option, DropdownProps } from '@/app/lib/definitions';
 import Image from 'next/image';
 import { ChevronDown } from 'lucide-react';
+import clsx from 'clsx';
 
 const Dropdown: React.FC<DropdownProps> = ({selectedOption, setSelectedOption}) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -34,8 +35,11 @@ const Dropdown: React.FC<DropdownProps> = ({selectedOption, setSelectedOption}) 
     return (
         <div className="w-full mx-auto text-darkGrey">
             <div
-                className="flex items-center justify-between w-full rounded-md border border-grey py-3 px-4 bg-white focus:outline-none shadow-none transition-all active:shadow-[0px_0px_32px_rgba(99,_60,_255,_0.25)] active:border-primary cursor-pointer"
-                // className="flex items-center justify-between w-full px-4 py-2 text-sm bg-white border border-gray-300 rounded-md cursor-pointer"
+                // className="flex items-center justify-between w-full rounded-md border border-grey py-3 px-4 bg-white focus:outline-none shadow-none transition-all active:shadow-[0px_0px_32px_rgba(99,_60,_255,_0.25)] active:border-primary cursor-pointer"
+                className={clsx(
+                    'flex items-center justify-between w-full rounded-md border border-grey py-3 px-4 bg-white focus:outline-none shadow-none transition-all active:shadow-[0px_0px_32px_rgba(99,_60,_255,_0.25)] active:border-primary cursor-pointer',
+                    isOpen && 'border-primary shadow-[0px_0px_32px_rgba(99,_60,_255,_0.25)]'
+                )}
                 onClick={toggleDropdown}
             >
                 {selectedOption ? (

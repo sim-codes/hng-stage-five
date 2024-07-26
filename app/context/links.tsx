@@ -62,7 +62,6 @@ export function LinksProvider({ children }: Readonly<{ children: React.ReactNode
 
     const addLink = () => {
         setLinks(prevLinks => [...prevLinks, { platform: '', url: '' }]);
-        console.log(links);
     };
 
     const removeLink = (indexToRemove: number) => {
